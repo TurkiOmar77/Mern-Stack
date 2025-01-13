@@ -28,6 +28,20 @@ const getWorkout = async (req ,res) =>{
 const cteateWorkout = async(req , res ) =>{
     // add doc to db 
     const {title , reps , load } = req.body
+
+    let empityFieled =[]
+    if(!title){
+        empityFieled.push('title')
+    }
+    if(!reps){
+        empityFieled.push('reps')
+    }
+    if(!load){
+        empityFieled.push('load')
+    }
+    if(empityFieled.length > 0 ){
+        return res.status(400).json({error : 'Pleas fill in all the fields',empityFieled})
+    }
     try{
         const workout = await Workout.create({title ,reps ,load})
         res.status(200).json(workout)

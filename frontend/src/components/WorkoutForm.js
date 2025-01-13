@@ -7,6 +7,7 @@ const WorkoutForm = () => {
     const [reps,setReps] = useState("")
     const [load,setLoad] = useState("")
     const [error,setError] = useState("")
+    const [empityFieled,setEmpityFieled] = useState([])
 
     const handleSubmit = async (e)=>{
         e.preventDefault()
@@ -22,11 +23,13 @@ const WorkoutForm = () => {
         const json = await response.json()
         if(!response.ok){
             setError(json.error)
+            setEmpityFieled(json.empityFieled)
         }
         if(response.ok){
             setTitle('')
             setLoad('')
             setReps('')
+            setEmpityFieled([])
             setError(null)
             console.log("new workout added",json)
             dispatch({type : "CREATE_WORKOUT",payload : json})
@@ -40,16 +43,21 @@ const WorkoutForm = () => {
             <input type="text"
             onChange={(e)=> setTitle(e.target.value)}
             value={title}
+            className={empityFieled.includes('title') ? 'error' : ''}
             />
             <label>Load (kg) : </label>
             <input type="number"
             onChange={(e)=> setLoad(e.target.value)}
             value={load}
+            className={empityFieled.includes('load') ? 'error' : ''}
+
             />
             <label>Reps : </label>
             <input type="number"
             onChange={(e)=> setReps(e.target.value)}
             value={reps}
+            className={empityFieled.includes('reps') ? 'error' : ''}
+
             />
 
             <button>Add workout</button>
